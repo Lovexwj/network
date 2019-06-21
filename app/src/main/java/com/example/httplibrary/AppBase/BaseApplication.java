@@ -6,8 +6,11 @@ import android.app.Application;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
+
 import android.text.TextUtils;
 import android.util.Log;
+
+
 
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
@@ -25,7 +28,7 @@ public class BaseApplication extends Application {
         return isHome;
     }
 
-    private ActivityLifecycleCallbacks lifecycleCallback = new ActivityLifecycleCallbacks() {
+    private Application.ActivityLifecycleCallbacks lifecycleCallback = new Application.ActivityLifecycleCallbacks() {
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
             if (!"com.tbruyelle.rxpermissions.ShadowActivity".equals(activity.getClass().getName())) {

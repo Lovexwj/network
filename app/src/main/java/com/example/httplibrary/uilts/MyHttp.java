@@ -7,6 +7,7 @@ import com.example.httplibrary.gsonuiles.MyGson;
 import com.example.httplibrary.interceptor.DeviceInterceptor;
 import com.example.httplibrary.interceptor.HttpBodyInterceptor;
 import com.example.httplibrary.interceptor.HttpCacheInterceptor;
+import com.example.httplibrary.interceptor.HttpConfig;
 import com.example.httplibrary.interceptor.HttpHeaderInterceptor;
 import com.example.httplibrary.interceptor.HttpResponseInterceptor;
 import com.example.httplibrary.interceptor.NetInterceptor;
@@ -55,13 +56,15 @@ public class MyHttp {
     private static Context context;
 
     public static void init(Context context) {
+
+
         MyHttp.context = context;
+
     }
 
     public static Context getContext() {
         return MyHttp.context;
     }
-
 
 
     public interface OnResult<T> {
@@ -79,12 +82,15 @@ public class MyHttp {
         if (retrofit == null) {
             Cache cache = null;
             File cacheDirectory = null;
-            if (cacheDirectory == null)
+            if (cacheDirectory == null){
                 cacheDirectory = new File(MyHttp.context.getCacheDir(), "http_cache");
+            }
+
+
             try {
                 if (cache == null) cache = new Cache(cacheDirectory, 10 * 1024 * 1024);
             } catch (Exception e) {
-                MyLog.e("OKHttp", "Could not create http cache"+ e);
+                MyLog.e("OKHttp", "Could not create http cache" + e);
             }
             ClearableCookieJar cookieJar = new PersistentCookieJar(
                     new SetCookieCache(), new SharedPrefsCookiePersistor(MyHttp.context)
@@ -157,11 +163,13 @@ public class MyHttp {
     public static <T> T with(Class<T> clazz) {
         return Singleton.INSTANCE.getRetrofit().create(clazz);
     }
+
     public static MyHttp setBaseUrl(String baseUrl) {
         retrofit = null;
         Singleton.INSTANCE.BASE_URL = baseUrl;
         return Singleton.INSTANCE;
     }
+
     public static MyHttp setDebug(HttpLoggingInterceptor.Level level) {
         Singleton.INSTANCE.logInterceptor.setLevel(level);
         return Singleton.INSTANCE;
